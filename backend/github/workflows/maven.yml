@@ -1,0 +1,32 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      - name: Configuration de JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build avec Maven (sans tests)
+        working-directory: ./backend
+        run: mvn clean install -DskipTests
+
+      - name: Archive des artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-artifacts
+          path: backend/target/*.jar
