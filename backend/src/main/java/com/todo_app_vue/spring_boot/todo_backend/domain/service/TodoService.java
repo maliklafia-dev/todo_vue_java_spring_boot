@@ -55,4 +55,9 @@ public class TodoService {
         repository.deleteById(id);
     }
 
+    public void createTodo(TodoEntity entity) {
+        if(entity != null ) {
+            repository.save(entity);
+        }
+    }
 }

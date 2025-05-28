@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@RequestMapping("/api")
 public class TodoController {
     private final TodoService todoService;
     private final TodoMapper todoMapper;
@@ -49,6 +50,13 @@ public class TodoController {
     public ResponseEntity<StatsResponseDto> getStats() {
         Stats stats = todoService.getStats();
         return new ResponseEntity<>(statsMapper.toDto(stats), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/todos", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createTodo(@RequestBody TodoResponseDto dto) {
+        TodoEntity todoEntity = todoMapper.dtoToEntity(dto);
+        todoService.createTodo(todoEntity);
     }
 
     @PutMapping(value = "/todos/{id}")
